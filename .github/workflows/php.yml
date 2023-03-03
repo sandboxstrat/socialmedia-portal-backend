@@ -1,0 +1,55 @@
+name: Push to Test Server
+
+on:
+  push:
+    branches: [ development ]
+  workflow_dispatch:
+
+env:
+  COMPOSER_HOME: /root
+
+jobs:
+  build:
+
+    runs-on: development
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Env
+      run: |
+        touch .env
+        echo DB_CONNECTION = ${{ secrets.DB_CONNECTION }} >> .env
+        echo DB_HOST = ${{ secrets.DB_HOST }} >> .env
+        echo DB_PORT = ${{ secrets.DB_PORT }} >> .env
+        echo DB_DATABASE = ${{ secrets.DB_DATABASE }} >> .env
+        echo DB_USERNAME = ${{ secrets.DB_USERNAME_TEST }} >> .env
+        echo DB_PASSWORD = ${{ secrets.DB_PASSWORD_TEST }} >> .env
+        echo AUTH0_DOMAIN = ${{ secrets.AUTH0_DOMAIN_TEST }} >> .env
+        echo AUTH0_AUD = ${{ secrets.AUTH0_AUD_TEST }} >> .env
+        echo CORS_ALLOWED_ORIGINS = ${{ secrets.CORS_ALLOWED_ORIGINS }} >> .env
+        echo TWITTER_MULTIPLE_TWEETS_API_ENDPOINT = ${{ secrets.TWITTER_MULTIPLE_TWEETS_API_ENDPOINT }} >> .env
+        echo TWITTER_SEARCH_API_ENDPOINT = ${{ secrets.TWITTER_SEARCH_API_ENDPOINT }} >> .env
+        echo TWITTER_API_BEARER_TOKEN = ${{ secrets.TWITTER_API_BEARER_TOKEN }} >> .env
+        echo COMPOSER_HOME = ${{ secrets.COMPOSER_HOME }} >> .env
+        cat .env
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate 
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+    
+    - run: php artisan migrate --force
+    - run: rsync -a /root/actions-runner/backend/backend/saber-socialmedia-portal-backend/saber-socialmedia-portal-backend/ /var/www/backend/
+
