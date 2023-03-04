@@ -33,11 +33,11 @@ trait QueryHelpers{
                 
                 }
 
-                return($query->whereBetween($column,[$startDate.'00:00:00', $endDate.'23:59:59']));
+                return($query->whereBetween($column,[$startDate.' 00:00:00', $endDate.' 23:59:59']));
 
             }else{
 
-                return($query->where($column,">=",$startDate.'00:00:00'));
+                return($query->where($column,">=",$startDate.' 00:00:00'));
 
             }
 
