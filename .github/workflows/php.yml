@@ -50,5 +50,5 @@ jobs:
 
     
     - run: php artisan migrate --force
-    - run: rsync -a /root/actions-runner/saber-social-portal-test/saber-socialmedia-portal-backend/saber-socialmedia-portal-backend/ /var/www/backend/
+    - run: rsync -a /actions-runner/saber-social-portal-test/saber-socialmedia-portal-backend/saber-socialmedia-portal-backend/ /var/www/backend/
 
