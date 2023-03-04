@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\TwitterTweets;
 use App\Traits\QueryHelpers;
+use Illuminate\Http\Request;
 use Log;
 
 class TwitterController extends Controller
@@ -65,8 +66,6 @@ class TwitterController extends Controller
         $tweetCounts = $this->querySetStartEndDates($tweetCounts,'twitter_tweets',$request['start_date'],$request['end_date']);
 
         $tweetCounts = $this->queryAddTrackerId($tweetCounts,$request['tracker_id']);
-
-        Log::info($tweetCounts ->toSql());
 
         $tweetCounts->groupBy('date');
 

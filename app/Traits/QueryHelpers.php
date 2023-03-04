@@ -15,11 +15,11 @@ trait QueryHelpers{
             $column = $tableName.'.created_at';
         }
         
-        if($startDate!=null){
+        if($startDate!=null&&$startDate!='null'){
 
             $startDate = date('Y-m-d',strtotime(urldecode($startDate)));
             
-            if($endDate!=null){
+            if($endDate!=null&&$endDate!='null'){
 
                 $endDate = date('Y-m-d',strtotime(urldecode($endDate)));
 
@@ -49,8 +49,6 @@ trait QueryHelpers{
     }
 
     private function queryAddTrackerId( $query, $trackerId = null ){
-
-        Log::info($trackerId);
 
         if( $trackerId !== null && $trackerId != "null" ){
 
