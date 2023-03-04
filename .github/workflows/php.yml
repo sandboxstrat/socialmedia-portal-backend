@@ -31,7 +31,6 @@ jobs:
         echo TWITTER_MULTIPLE_TWEETS_API_ENDPOINT = ${{ secrets.TWITTER_MULTIPLE_TWEETS_API_ENDPOINT }} >> .env
         echo TWITTER_SEARCH_API_ENDPOINT = ${{ secrets.TWITTER_SEARCH_API_ENDPOINT }} >> .env
         echo TWITTER_API_BEARER_TOKEN = ${{ secrets.TWITTER_API_BEARER_TOKEN }} >> .env
-        echo COMPOSER_HOME = ${{ secrets.COMPOSER_HOME }} >> .env
         cat .env
 
     - name: Validate composer.json and composer.lock
@@ -51,5 +50,5 @@ jobs:
 
     
     - run: php artisan migrate --force
-    - run: rsync -a /root/actions-runner/backend/backend/saber-socialmedia-portal-backend/saber-socialmedia-portal-backend/ /var/www/backend/
+    - run: rsync -a /root/actions-runner/saber-social-portal-test/saber-socialmedia-portal-backend/saber-socialmedia-portal-backend/ /var/www/backend/
 
