@@ -32,9 +32,9 @@ $router->group(['prefix' => 'admin','middleware' => 'auth'], function () use ($r
 
     $router->post('twitter/search', ['uses' =>'TwitterApiController@searchTwitterApi']);
 
-    $router->get('twitter/tracker[/{trackerId}[/{startDate}[/{endDate}]]]',['uses'=>'TwitterController@getTweets']);
+    $router->post('twitter/tracker',['uses'=>'TwitterController@getTweets']);
 
-    $router->get('twitter/count[/{trackerId}[/{startDate}[/{endDate}]]]',['uses'=>'TwitterController@getTweetCountByDay']);
+    $router->post('twitter/count',['uses'=>'TwitterController@getTweetCountByDay']);
 
     $router->post('export',['uses'=>'ExportController@createCsv']);
 

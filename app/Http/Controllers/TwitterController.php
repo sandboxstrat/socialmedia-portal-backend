@@ -13,7 +13,7 @@ class TwitterController extends Controller
 
     use QueryHelpers;
 
-    public function getTweets($trackerId=null, $startDate=null, $endDate=null){
+    public function getTweets(Request $request){
         try{
 
             $tweets = DB::table('twitter_tweets')
@@ -32,11 +32,9 @@ class TwitterController extends Controller
                     'trackers.name as tracker_name',
                 );
 
-            $tweets = $this->querySetStartEndDates($tweets,'twitter_tweets',$startDate,$endDate);
+            $tweets = $this->querySetStartEndDates($tweets,'twitter_tweets',$request['start_date'],$request['end_date']);
 
-            $tweets = $this->queryAddTrackerId($tweets,$trackerId);
-
-            Log::info($tweets ->toSql());
+            $tweets = $this->queryAddTrackerId($tweets,$request['tracker_id']);
 
             $tweets = $tweets->get();
 
@@ -59,14 +57,14 @@ class TwitterController extends Controller
 
     }
 
-    public function getTweetCountByDay( $trackerId = null, $startDate = null, $endDate=null ){
+    public function getTweetCountByDay( Request $request ){
 
         $tweetCounts = DB::table('twitter_tweets')
             ->selectRaw('DATE_FORMAT(DATE(created_at), "%m/%d/%Y") as date,COUNT(id) as count');
         
-        $tweetCounts = $this->querySetStartEndDates($tweetCounts,'twitter_tweets',$startDate,$endDate);
+        $tweetCounts = $this->querySetStartEndDates($tweetCounts,'twitter_tweets',$request['start_date'],$request['end_date']);
 
-        $tweetCounts = $this->queryAddTrackerId($tweetCounts,$trackerId);
+        $tweetCounts = $this->queryAddTrackerId($tweetCounts,$request['tracker_id']);
 
         Log::info($tweetCounts ->toSql());
 
