@@ -21,8 +21,9 @@ class TwitterController extends Controller
                 ->join('twitter_users','twitter_tweets.twitter_user_id','=','twitter_users.id')
                 ->join('trackers','twitter_tweets.tracker_id','=','trackers.id')
                 ->select(
-                    'twitter_users.name as username',
+                    'twitter_users.username as username',
                     'twitter_tweets.id',
+                    DB::raw('CONCAT("https://twitter.com/",twitter_users.username,"/status/",twitter_tweets.id) as link'),
                     'twitter_tweets.text',
                     'twitter_tweets.retweet_count',
                     'twitter_tweets.reply_count',
@@ -38,7 +39,7 @@ class TwitterController extends Controller
             $tweets = $this->queryAddTrackerId($tweets,$request['tracker_id']);
 
             $tweets = $tweets->get();
-
+            
 
 
         }catch(Throwable $t){
