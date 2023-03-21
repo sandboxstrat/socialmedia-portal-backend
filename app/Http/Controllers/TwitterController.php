@@ -22,7 +22,7 @@ class TwitterController extends Controller
                 ->join('trackers','twitter_tweets.tracker_id','=','trackers.id')
                 ->select(
                     'twitter_users.username as username',
-                    'twitter_tweets.id',
+                    DB::raw('CAST(twitter_tweets.id as CHAR(19)) as id'),
                     DB::raw('CONCAT("https://twitter.com/",twitter_users.username,"/status/",twitter_tweets.id) as link'),
                     'twitter_tweets.text',
                     'twitter_tweets.retweet_count',
@@ -41,8 +41,6 @@ class TwitterController extends Controller
 
             $tweets = $tweets->get();
             
-
-
         }catch(Throwable $t){
 
             Log::error($t);
