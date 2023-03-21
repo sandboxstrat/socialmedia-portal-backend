@@ -32,7 +32,8 @@ class TwitterController extends Controller
                     'twitter_tweets.impression_count',
                     'twitter_tweets.created_at',
                     'trackers.name as tracker_name',
-                );
+                )
+                ->orderBy('created_at', 'desc');
 
             $tweets = $this->querySetStartEndDates($tweets,'twitter_tweets',$request['start_date'],$request['end_date']);
 

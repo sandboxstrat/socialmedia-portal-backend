@@ -12,7 +12,7 @@ class TrackerController extends Controller
     
     public function getAllTrackers()
     {
-        return response()->json(Tracker::all());
+        return response()->json(Tracker::orderBy('name')->get());
     }
 
     public function getOneTracker($id)
