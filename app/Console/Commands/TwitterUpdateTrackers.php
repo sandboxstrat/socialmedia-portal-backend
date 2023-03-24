@@ -48,7 +48,7 @@ class TwitterUpdateTrackers extends Command
             $yesterdayDate = date('Y-m-d',strtotime('-1 day'));
             $trackers = DB::table('trackers')
                 ->select('trackers.*')
-                ->where('twitter_last_updated',"<", $yesterdayDate.' 00:00:00')
+                ->where('twitter_last_updated',"<=", $yesterdayDate.' 23:59:59')
                 ->where('twitter_initialized',"=", true)
                 ->get();
             if(!empty($trackers)){
